@@ -1,0 +1,793 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/weilai.github.io/img/fluid.png">
+  <link rel="icon" href="/weilai.github.io/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Me">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="简单解释一哈上面的深度学习结构图： 输入的图像经过网络Backbone和FPN提取特征，提取后的特征级联在一起，得到原图四分之一大小的特征，然后利用卷积层分别得到文本区域预测概率图和阈值图，进而通过DB的后处理得到文本包围曲线。 各种backbone的对应的图               1、首先对于detect部分我打算进行一个再训练（不改结构，但是换backbone，因为)，比如提高它的感受">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的OCR之路">
+<meta property="og:url" content="https://qiantubu.github.io/weilai.github.io/2023/08/01/paddle_ocr/index.html">
+<meta property="og:site_name" content="blog of Mr.Li">
+<meta property="og:description" content="简单解释一哈上面的深度学习结构图： 输入的图像经过网络Backbone和FPN提取特征，提取后的特征级联在一起，得到原图四分之一大小的特征，然后利用卷积层分别得到文本区域预测概率图和阈值图，进而通过DB的后处理得到文本包围曲线。 各种backbone的对应的图               1、首先对于detect部分我打算进行一个再训练（不改结构，但是换backbone，因为)，比如提高它的感受">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiantubu.github.io/weilai.github.io/img/DB%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%9B%BE.png#%E8%AE%BE%E7%BD%AE%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%E5%9B%BE">
+<meta property="article:published_time" content="2023-08-01T06:49:44.000Z">
+<meta property="article:modified_time" content="2023-09-11T08:08:14.560Z">
+<meta property="article:author" content="Me">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://qiantubu.github.io/weilai.github.io/img/DB%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%9B%BE.png#%E8%AE%BE%E7%BD%AE%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%E5%9B%BE">
+  
+  
+  
+  <title>我的OCR之路 - blog of Mr.Li</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/weilai.github.io/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/weilai.github.io/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/weilai.github.io/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"qiantubu.github.io","root":"/weilai.github.io/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"***","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/weilai.github.io/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/weilai.github.io/js/utils.js" ></script>
+  <script  src="/weilai.github.io/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/weilai.github.io/">
+      <strong>blog of Mr.Li</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/weilai.github.io/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="我的OCR之路"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-01 14:49" pubdate>
+          2023年8月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">我的OCR之路</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="../img/DB%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%9B%BE.png" srcset="/weilai.github.io/img/loading.gif" lazyload alt=""></p>
+<p>简单解释一哈上面的深度学习结构图：</p>
+<p><span style="color:red">输入的图像经过网络Backbone和FPN提取特征，提取后的特征级联在一起，得到原图四分之一大小的特征，然后利用卷积层分别得到文本区域预测概率图和阈值图，进而通过DB的后处理得到文本包围曲线。</span></p>
+<p>各种backbone的对应的图<br>
+<img src="../img/backbone.png" srcset="/weilai.github.io/img/loading.gif" lazyload alt=""></p>
+<div class="note note-success">
+            <p>1、首先对于detect部分我打算进行一个再训练（不改结构，但是换backbone，因为)，比如提高它的感受野，或者改变学习率等。</p><p>目前打算采用<strong>res2net50</strong>来训练，paddle开源了预训练模型，我目前想法是在这个基础上进行训练和调优。</p><p>2、对于识别部分，我打算用自定义的网络结构去进行迁移学习和优化，迁移学习，也就是先用通用数据集，将模型训练到一定程度，然后，接着使用一些独特的数据集进行训练来进行。</p><p>3、对于方向分类器，采用paddle里面的方法，用来处理倾斜图片的方法。</p><p>4、视工作量，添加是否要进行版面结构分析功能，也就是自动提取关键文字内容。</p><p>5、最麻烦的就是将前面训练出来的模型用paddle的工具将其导出成为推理模型，</p>
+          </div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs python">  <span class="hljs-keyword">class</span> <span class="hljs-title class_">ConvBNLayer</span>(nn.Layer):<span class="hljs-comment">#线性层</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params"></span><br><span class="hljs-params">        self,</span><br><span class="hljs-params">        in_channels,</span><br><span class="hljs-params">        out_channels,</span><br><span class="hljs-params">        kernel_size,</span><br><span class="hljs-params">        stride=<span class="hljs-number">1</span>,</span><br><span class="hljs-params">        groups=<span class="hljs-number">1</span>,</span><br><span class="hljs-params">        is_vd_mode=<span class="hljs-literal">False</span>,</span><br><span class="hljs-params">        act=<span class="hljs-literal">None</span>,</span><br><span class="hljs-params">        name=<span class="hljs-literal">None</span>, </span>):<br>    <span class="hljs-built_in">super</span>(ConvBNLayer, self).__init__()<br><br>    self.is_vd_mode = is_vd_mode<br>    self._pool2d_avg = nn.AvgPool2D(<br>        kernel_size=stride, stride=stride, padding=<span class="hljs-number">0</span>, ceil_mode=<span class="hljs-literal">True</span>)<span class="hljs-comment">#平均池化层</span><br>    self._conv = nn.Conv2D(<br>        in_channels=in_channels,<br>        out_channels=out_channels,<br>        kernel_size=kernel_size,<br>        stride=<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> is_vd_mode <span class="hljs-keyword">else</span> stride,<br>        padding=(kernel_size - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>,<br>        groups=groups,<br>        weight_attr=ParamAttr(name=name + <span class="hljs-string">"_weights"</span>),<br>        bias_attr=<span class="hljs-literal">False</span>)<span class="hljs-comment">#实现二维卷积</span><br>    <span class="hljs-keyword">if</span> name == <span class="hljs-string">"conv1"</span>:<br>        bn_name = <span class="hljs-string">"bn_"</span> + name<br>    <span class="hljs-keyword">else</span>:<br>        bn_name = <span class="hljs-string">"bn"</span> + name[<span class="hljs-number">3</span>:]<br>    self._batch_norm = nn.BatchNorm(<br>        out_channels,<br>        act=act,<br>        param_attr=ParamAttr(name=bn_name + <span class="hljs-string">'_scale'</span>),<br>        bias_attr=ParamAttr(bn_name + <span class="hljs-string">'_offset'</span>),<br>        moving_mean_name=bn_name + <span class="hljs-string">'_mean'</span>,<br>        moving_variance_name=bn_name + <span class="hljs-string">'_variance'</span>)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, inputs</span>):<span class="hljs-comment">#前向反馈</span><br>    <span class="hljs-keyword">if</span> self.is_vd_mode:<br>        inputs = self._pool2d_avg(inputs)<br>    y = self._conv(inputs)<br>    y = self._batch_norm(y)<br>    <span class="hljs-keyword">return</span> y     <br></code></pre></td></tr></table></figure>
+<p>nn.AvgPool2D有以下几个参数：<br>
+kernel_size：池化核大小，可以是一个整数或一个元组（Tuple），表示池化核的高度和宽度。<br>
+stride：池化步长，可以是一个整数或一个元组，表示池化核在输入特征图上移动的步长。默认为None，表示步长等于池化核大小。<br>
+padding：填充大小，可以是一个整数或一个元组，表示在输入特征图的边缘添加的零填充的大小。默认为0，表示不添加填充。<br>
+ceil_mode：是否使用向上取整模式，默认为False。如果为True，则在计算输出特征图的大小时，使用向上取整的方式；如果为False，则使用向下取整的方式。<br>
+count_include_pad：是否在计算平均值时包含填充值，默认为True。如果为True，则在求平均值时，将填充值也纳入计算；如果为False，则在求平均值时，忽略填充值。<br>
+divisor_override：是否使用自定义除数，默认为None。如果不为None，则使用该值作为除数来计算平均值；如果为None，则使用池化核的大小或有效区域的大小作为除数来计算平均值。<br>
+nn.AvgPool2D有以下一个方法：<br>
+forward(x)：根据给定的参数对输入特征图x进行平均池化操作，并返回输出特征图y。</p>
+<p>nn.Conv2D有以下几个参数：<br>
+in_channels：输入通道数。<br>
+out_channels：输出通道数。<br>
+kernel_size：卷积核大小，可以是一个整数或一个元组，表示卷积核的高度和宽度。<br>
+stride：卷积步长，可以是一个整数或一个元组，表示卷积核在输入特征图上移动的步长。默认为1。<br>
+padding：填充大小，可以是一个整数或一个元组，表示在输入特征图的边缘添加的零填充的大小。默认为0，表示不添加填充。<br>
+dilation：空洞大小，可以是一个整数或一个元组，表示在卷积核中每个元素之间插入的空洞的大小。默认为1，表示不添加空洞。<br>
+groups：卷积分组数，默认为1。如果大于1，则将输入通道和输出通道分成相等的组数，每个组内进行独立的卷积操作。<br>
+weight_attr：权重参数的属性设置，可以是一个ParamAttr对象或者None。默认为None，表示使用默认的初始化方法和正则化方法。<br>
+bias_attr：偏置参数的属性设置，可以是一个ParamAttr对象、False或者None。默认为None，表示使用默认的初始化方法和正则化方法。如果为False，则不使用偏置参数。</p>
+<p>nn.BatchNorm是一种神经网络层，用于对每个小批量数据的输入进行归一化，使其具有零均值和单位方差。这样可以加速神经网络的训练，提高收敛速度和稳定性。</p>
+<div class="note note-light">
+            <p>ResNet_vd是一种基于ResNet的改进网络架构，由百度视觉技术部门提出，用于图像分类和目标检测等任务。ResNet_vd的主要改进有以下几点：</p><ul><li>在每个卷积层之前增加了一个批归一化层（Batch Normalization Layer），以减少内部协变量偏移（Internal Covariate Shift），加速网络的收敛，提高网络的泛化能力。</li><li>在每个残差块（Residual Block）的第一个卷积层之前增加了一个平均池化层（Average Pooling Layer），以减少计算量和内存消耗，同时保留特征图的主要信息。</li><li>在每个残差块的最后一个卷积层之后增加了一个激活函数（Activation Function），以增强特征图的非线性表达能力，提高网络的性能。</li></ul>
+          </div>
+<p>​       配置paddleocr的过程：</p>
+<p>1、创建paddleocr的环境，python==3.7;</p>
+<p>2、克隆仓库，git clone <a target="_blank" rel="noopener" href="https://gitee.com/paddlepaddle/PaddleOCR">https://gitee.com/paddlepaddle/PaddleOCR</a></p>
+<p>3、安装依赖包</p>
+<p>pip install paddleocr -i <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<p>python -m pip install paddlepaddle==2.2.2 -i <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<p>因为urllib3&gt;2.0的话，就需要openssll1.1.0以上的版本支持。所以重新安装urllib3</p>
+<p>pip install urllib3==1.25.6  -i <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<p>​</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>我的OCR之路</div>
+      <div>https://qiantubu.github.io/weilai.github.io/2023/08/01/paddle_ocr/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Me</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/weilai.github.io/2023/07/21/%E6%9C%89%E5%BD%B1%E5%93%8D%E5%8A%9B%E7%9A%84%E6%B2%9F%E9%80%9A%E7%9A%84%E5%98%89%E5%AE%BE%E8%AE%B0%E5%BD%95/" title="有影响力的沟通的嘉宾发言记录">
+                        <span class="hidden-mobile">有影响力的沟通的嘉宾发言记录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/weilai.github.io/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"992c647b2bd7c544cbcc","clientSecret":"87a825ad7398948b139d30fd3608f57c91d00fbd","repo":"comments_load","owner":"qiantubu","admin":["qiantubu"],"language":"zh-CN","labels":["gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":true,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'a47b51ceefae520d1bdf2a40a526fe6e'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/weilai.github.io/js/events.js" ></script>
+<script  src="/weilai.github.io/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/weilai.github.io/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/weilai.github.io/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/weilai.github.io/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

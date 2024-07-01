@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/weilai.github.io/img/fluid.png">
+  <link rel="icon" href="/weilai.github.io/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Me">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="找工作学习 leetcode 01.01.01 数据结构与算法（第 01 ~ 02 天） (datawhalechina.github.io) 02. 算法复杂度 | 算法通关手册（LeetCode） (itcharge.cn) 刷题（6.30） 1、两数之和：1. 两数之和 - 力扣（LeetCode） 123456789101112131415161718class Solution &amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="blog of Mr.Li">
+<meta property="og:url" content="https://qiantubu.github.io/weilai.github.io/2024/07/01/%E5%8A%9B%E6%89%A3%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="blog of Mr.Li">
+<meta property="og:description" content="找工作学习 leetcode 01.01.01 数据结构与算法（第 01 ~ 02 天） (datawhalechina.github.io) 02. 算法复杂度 | 算法通关手册（LeetCode） (itcharge.cn) 刷题（6.30） 1、两数之和：1. 两数之和 - 力扣（LeetCode） 123456789101112131415161718class Solution &amp;#12">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-01T14:40:07.743Z">
+<meta property="article:modified_time" content="2024-07-01T14:40:39.463Z">
+<meta property="article:author" content="Me">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>blog of Mr.Li</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/weilai.github.io/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/weilai.github.io/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/weilai.github.io/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"qiantubu.github.io","root":"/weilai.github.io/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"***","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/weilai.github.io/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/weilai.github.io/js/utils.js" ></script>
+  <script  src="/weilai.github.io/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/weilai.github.io/">
+      <strong>blog of Mr.Li</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/weilai.github.io/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/weilai.github.io/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-01 22:40" pubdate>
+          2024年7月1日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>找工作学习</h1>
+<h2 id="leetcode">leetcode</h2>
+<p><a target="_blank" rel="noopener" href="https://datawhalechina.github.io/leetcode-notes/#/ch01/01.01/01.01.01-Data-Structures-Algorithms">01.01.01 数据结构与算法（第 01 ~ 02 天） (datawhalechina.github.io)</a></p>
+<p><a target="_blank" rel="noopener" href="https://algo.itcharge.cn/00.Introduction/02.Algorithm-Complexity/#_1-%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%AE%80%E4%BB%8B">02. 算法复杂度 | 算法通关手册（LeetCode） (itcharge.cn)</a></p>
+<p>刷题（6.30）</p>
+<p>1、两数之和：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/">1. 两数之和 - 力扣（LeetCode）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">twoSum</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> target)</span> </span>&#123;<br>     unordered_map&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt; hashtable;<br>     <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;nums.<span class="hljs-built_in">size</span>();i++)<br>     &#123;<br>        <span class="hljs-comment">// 通过遍历一遍去寻找两值之差</span><br>        <span class="hljs-keyword">auto</span> it =hashtable.<span class="hljs-built_in">find</span>(target-nums[i]);<br>        <span class="hljs-keyword">if</span>(it !=hashtable.<span class="hljs-built_in">end</span>())<br>        &#123;<br>            <span class="hljs-keyword">return</span>  &#123;it-&gt;second,i&#125;;<br>        &#125;<br>            <span class="hljs-comment">//  如果在哈希表中没有找到匹配项，那么将当前元素及其索引添加到哈希表中，以便后续的迭代可以查找它。</span><br>        hashtable[nums[i]]=i;<br>     &#125;<br>    <span class="hljs-keyword">return</span> &#123;&#125;;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>2、<strong>顺时针螺旋顺序</strong> <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/spiral-matrix/description/">54. 螺旋矩阵 - 力扣（LeetCode）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">spiralOrder</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;&amp; matrix)</span> </span>&#123;<br>        vector&lt;<span class="hljs-type">int</span>&gt; ans; <span class="hljs-comment">// 保存结果</span><br>        <span class="hljs-keyword">if</span> (matrix.<span class="hljs-built_in">empty</span>())<br>            <span class="hljs-keyword">return</span> ans;<br>        <span class="hljs-type">int</span> left = <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> right = matrix[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> up = <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> down = matrix.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>            <span class="hljs-comment">// 上边界</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = left; i &lt;= right; i++) &#123;ans.<span class="hljs-built_in">push_back</span>(matrix[up][i]);&#125;<br>            up++;<br>            <span class="hljs-keyword">if</span> (up &gt; down) &#123;<span class="hljs-keyword">break</span>;&#125;<br>            <span class="hljs-comment">// 右边界</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = up; i &lt;= down; i++) &#123;ans.<span class="hljs-built_in">push_back</span>(matrix[i][right]);&#125;<br>            right--;<br>            <span class="hljs-keyword">if</span> (right &lt; left) &#123; <span class="hljs-keyword">break</span>;&#125;<br>            <span class="hljs-comment">// 下边界</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = right; i &gt;= left; i--) &#123;ans.<span class="hljs-built_in">push_back</span>(matrix[down][i]);&#125;<br>            down--;<br>            <span class="hljs-keyword">if</span> (down &lt; up) &#123;<span class="hljs-keyword">break</span>;&#125;<br>            <span class="hljs-comment">// 左边界</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = down; i &gt;= up; i--) &#123;ans.<span class="hljs-built_in">push_back</span>(matrix[i][left]);&#125;<br>            left++;<br>            <span class="hljs-keyword">if</span> (left &gt; right) &#123;<span class="hljs-keyword">break</span>;&#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br><span class="hljs-comment">//原理是利用，每次写入ans的数据，都去掉对应的边界</span><br></code></pre></td></tr></table></figure>
+<p>学习C++的unordered系列容器，主要是在哈希上面使用；</p>
+<p>unordered_set：无序唯一元素集合，存储一组唯一的元素，不允许重复。<br>
+unordered_multiset：无序元素集合，存储一组元素，允许重复。<br>
+unordered_map：无序键值对集合，存储一组唯一的键值对，每个键只能出现一次。<br>
+unordered_multimap：无序键值对集合，存储一组键值对，允许键的重复。<br>
+3、宝石与石头 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/jewels-and-stones/">771. 宝石与石头 - 力扣（LeetCode）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">numJewelsInStones</span><span class="hljs-params">(string jewels, string stones)</span> </span>&#123;<br>    unordered_set&lt;<span class="hljs-type">char</span>&gt; jewset;<span class="hljs-comment">//unordered_set 类型的变量 jewelsSet 用于存储 jewels 字符串中的每个字符</span><br>    <span class="hljs-type">int</span> jewelsCount = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span> jl=jewels.<span class="hljs-built_in">length</span>(),sl=stones.<span class="hljs-built_in">length</span>();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; jl; i++) &#123;<br>            <span class="hljs-type">char</span> jewel = jewels[i];<br>            jewset.<span class="hljs-built_in">insert</span>(jewel);<br>        &#125;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; sl; i++) &#123;<br>            <span class="hljs-type">char</span> stone = stones[i];<br>            <span class="hljs-keyword">if</span> (jewset.<span class="hljs-built_in">count</span>(stone)) &#123;<br>                jewelsCount++;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> jewelsCount;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>4、大写字母自动转成小写字母，tolower(ch)（C++）;</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">string <span class="hljs-title">toLowerCase</span><span class="hljs-params">(string s)</span> </span>&#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span>&amp; ch: s) &#123;<br>            <span class="hljs-keyword">if</span> (ch &gt;= <span class="hljs-number">65</span> &amp;&amp; ch &lt;= <span class="hljs-number">90</span>) &#123;<br>                ch |= <span class="hljs-number">32</span>;<span class="hljs-comment">//按位或运算，有一个为1.即为1，这是因为大写字母和小写字母在 ASCII 表中的二进制表示仅在最低位有所不同，按位或运算不会改变其他位，但会将最低位设置为 1</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> s;<br>    &#125;<br>&#125;;<br><br></code></pre></td></tr></table></figure>
+<p>5、爬楼梯 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/climbing-stairs/solutions/2361764/70-pa-lou-ti-dong-tai-gui-hua-qing-xi-tu-ruwa/">70. 爬楼梯 - 力扣（LeetCode）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<span class="hljs-comment">//相当于斐波那契数列</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">climbStairs</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>&#123;<br><span class="hljs-type">int</span> a = <span class="hljs-number">1</span>, b = <span class="hljs-number">1</span>, sum;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++)&#123;<br>            sum = a + b;<br>            a = b;<br>            b = sum;<br>        &#125;<br>        <span class="hljs-keyword">return</span> b;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>6、轮转数组 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rotate-array/description/">189. 轮转数组 - 力扣（LeetCode）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">reverse</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> </span>&#123;<br>        <span class="hljs-keyword">while</span> (start &lt; end) &#123;<br>            <span class="hljs-built_in">swap</span>(nums[start], nums[end]);<br>            start += <span class="hljs-number">1</span>;<br>            end -= <span class="hljs-number">1</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">rotate</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> k)</span> </span>&#123;<br>         k %= nums.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-built_in">reverse</span>(nums, <span class="hljs-number">0</span>, nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">reverse</span>(nums, <span class="hljs-number">0</span>, k - <span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">reverse</span>(nums, k, nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>7、寻找重复的数  <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-the-duplicate-number/">287. 寻找重复数 - 力扣（LeetCode）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">findDuplicate</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span> </span>&#123;<br>        <span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = n - <span class="hljs-number">1</span>, ans = <span class="hljs-number">-1</span>;<br><br>        <span class="hljs-keyword">while</span> (l &lt;= r) &#123;<br>            <span class="hljs-type">int</span> mid = (l + r) &gt;&gt; <span class="hljs-number">1</span>;<br>            <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;<br>            <br>            <span class="hljs-comment">// 计算小于等于mid的数的数量</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;<br>                cnt += nums[i] &lt;= mid;<br>            &#125;<br><br>            <span class="hljs-comment">// 如果小于等于mid的数的数量大于mid，说明重复的数在[mid, r]区间内</span><br>            <span class="hljs-keyword">if</span> (cnt &gt; mid) &#123;<br>                r = mid - <span class="hljs-number">1</span>;<br>                ans = mid; <span class="hljs-comment">// 将当前mid作为潜在的重复值</span><br>            &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 否则，重复的数在[l, mid-1]区间内</span><br>                l = mid + <span class="hljs-number">1</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>8、两数之和ⅡI-输入有序数组   <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/">167. 两数之和 II - 输入有序数组 - 力扣（LeetCode）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">twoSum</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; numbers, <span class="hljs-type">int</span> target)</span> </span>&#123;<br>    <span class="hljs-type">int</span> r=numbers.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>;<br>    <span class="hljs-type">int</span> l=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span>(l&lt;r)<br>    &#123;<br>        <span class="hljs-comment">//因为是非降的数组排序</span><br>        <span class="hljs-comment">//使用r,l来充当双指针，一个从左边往右边走，一个从右边往左边走</span><br>        <span class="hljs-keyword">if</span>(numbers[l]+numbers[r]&gt;target)<br>        &#123;<br>            r--;<br>        &#125;<br>        <span class="hljs-keyword">if</span>(numbers[l]+numbers[r]&lt;target)<br>        &#123;<br>            l++;<br>        &#125;<br>        <span class="hljs-keyword">if</span>(numbers[l]+numbers[r]==target)<br>        <span class="hljs-keyword">return</span> &#123;l+<span class="hljs-number">1</span>,r+<span class="hljs-number">1</span>&#125;;<br>    &#125;<br>    <span class="hljs-keyword">return</span> &#123;<span class="hljs-number">0</span>,<span class="hljs-number">0</span>&#125;;<br>    <br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>9、大小为K且平均值大于等于阀值的子数组数目</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">numOfSubarrays</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; arr, <span class="hljs-type">int</span> k, <span class="hljs-type">int</span> threshold)</span> </span>&#123;<br>        <span class="hljs-type">int</span> right = k - <span class="hljs-number">1</span>, result = <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> curr = std::<span class="hljs-built_in">accumulate</span>(arr.<span class="hljs-built_in">begin</span>(), arr.<span class="hljs-built_in">begin</span>() + k, <span class="hljs-number">0</span>);<span class="hljs-comment">//先初始化k组滑动窗口的累加值</span><br><br>        <span class="hljs-keyword">while</span> (++right &lt; arr.<span class="hljs-built_in">size</span>()) &#123;<br>            result += (curr &gt;= k * threshold) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;<br>            curr += (arr[right] - arr[right - k]);<span class="hljs-comment">//加上新加入元素-旧加入元素之间的差值</span><br>        &#125;<br><br>        result += (curr &gt;= k * threshold) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;<span class="hljs-comment">//判定最后一组滑动窗口是否满足条件</span><br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://qiantubu.github.io/weilai.github.io/2024/07/01/力扣刷题记录/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Me</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/weilai.github.io/2023/08/01/paddle_ocr/" title="我的OCR之路">
+                        <span class="hidden-mobile">我的OCR之路</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/weilai.github.io/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"992c647b2bd7c544cbcc","clientSecret":"87a825ad7398948b139d30fd3608f57c91d00fbd","repo":"comments_load","owner":"qiantubu","admin":["qiantubu"],"language":"zh-CN","labels":["gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":true,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '2445d9b1d6d2dd412e42fa93a034e7b3'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/weilai.github.io/js/events.js" ></script>
+<script  src="/weilai.github.io/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/weilai.github.io/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/weilai.github.io/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/weilai.github.io/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
